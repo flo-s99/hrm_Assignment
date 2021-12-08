@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Python smart functions for HRM
 """
 Student Name: Florian Sebastian Stanglmeier
@@ -42,7 +41,8 @@ def people_with_same_Manager():
 
 
 # [TESTED]: WORKING
-# people_with_same_Manager()
+people_with_same_Manager()
+input("Press Enter to continue to the next function...")
 
 # Function: [3]
 # Find workers who are over and under 30 years to prevent age discrimination
@@ -66,8 +66,8 @@ def prevent_age_discrimination():
 
 
 # [TESTED]: WORKING
-# prevent_age_discrimination()
-
+prevent_age_discrimination()
+input("Press Enter to continue to the next function...")
 # Function: [4]
 # Find people who are with the same manager since the beginning and have been in his/her role for over x=5 years
 
@@ -83,8 +83,8 @@ def no_new_roles():
 
 
 # [TESTED]: WORKING
-# no_new_roles()
-
+no_new_roles()
+input("Press Enter to continue to the next function...")
 # Function: [5]
 # Show from which departments those people are (who do their role since +5 years and have the same manager)
 # Indicates the departments (especially also number of departments) which should implement a new promotion strategy
@@ -98,8 +98,8 @@ def plot_noNewRoles():
 
 
 # [TESTED]: WORKING
-# plot_noNewRoles()
-
+plot_noNewRoles()
+input("Press Enter to continue to the next function...")
 # Helper function
 
 
@@ -127,8 +127,8 @@ def data_plot_3d():
 
 
 # [TESTED]: WORKING
-# data_plot_3d()
-
+data_plot_3d()
+input("Press Enter to continue to the next function...")
 
 # Function: [7]
 # Visualize the individually chosen user inputs in a interactive, scalable 3D model
@@ -158,8 +158,8 @@ def scatterplot_3d():
 
 
 # [TESTED]: WORKING
-# scatterplot_3d()
-
+scatterplot_3d()
+input("Press Enter to continue to the next function...")
 # Function: [8]
 # See whether the environment satisfaction is coupled to age in any way
 # This function sorts a list by descending satisfaction and displays the age
@@ -174,8 +174,8 @@ def environment_satisfaction():
 
 
 # [TESTED]: WORKING
-# environment_satisfaction()
-
+environment_satisfaction()
+input("Press Enter to continue to the next function...")
 # Function: [9]
 # Locate recently promoted (User specific: Choose employees promoted in the last n years)
 
@@ -190,7 +190,8 @@ def recently_promoted():
 
 
 # [TESTED]: WORKING
-# recently_promoted()
+recently_promoted()
+input("Press Enter to continue to the next function...")
 
 # Function: [10]
 # Turnover by department analysis
