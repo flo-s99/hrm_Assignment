@@ -8,6 +8,7 @@ Selected Topic: Big Data HRM analysis - Equality Analysis
 """
 
 # Import the dependencies
+from contextlib import nullcontext
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -35,8 +36,8 @@ def people_with_same_Manager():
     data = read_data()
     df_sameManagerSinceStart = data.loc[(
         data['TotalWorkingYears'] == data['YearsWithCurrManager'])]
-    print("This is a list of employees who work under the same manager since they started working:",
-          df_sameManagerSinceStart)
+    print(df_sameManagerSinceStart,
+     "This is a list of employees who work under the same manager since they started working:")
     return df_sameManagerSinceStart
 
 
@@ -114,15 +115,23 @@ def load_csv_as_df():
 
 def data_plot_3d():
     df = pd.read_csv('hrm.csv')
-    input1 = input("Enter your first Parameter (example: Age)")
+    input1 = input("Enter your first Parameter (example: Age) => ")
     print("parameter1: ",  input1)
-    input2 = input("Enter your second Parameter (example: Department)")
+    input2 = input("Enter your second Parameter (example: Department)  => ")
     print("parameter2: ",  input2)
-    input3 = input("Enter your third Parameter (example: DistanceFromHome )")
+    input3 = input("Enter your third Parameter (example: DistanceFromHome ) => ")
     print("parameter3: ",  input3)
 
     df_clean = df[[input1, input2, input3]]
     print(df_clean)
+    print("This is the data frame that only contains your specified data")
+    user_pref = input("You can either save the data frame: Press s - OR - Continue without saving it as a csv: Press c (Press Enter after submission) => ")
+    if user_pref == "s":
+        df_clean.to_csv("3D_PlotData_asCSV.csv")
+    elif user_pref == "c":
+        print("Continuing")
+    else :
+        print("No specified action. Continuing without saving data to CSV.")
     return df_clean, input1, input2, input3
 
 
@@ -135,6 +144,7 @@ input("Press Enter to continue to the next function...")
 # x denotes input 1, z denotes input 2 and y input 3, respectively
 # Configure Plotly to be rendered inline in the notebook.
 def scatterplot_3d():
+    print("Now choose three parameters you want to 3D Plot:")
     df_clean, input1, input2, input3 = data_plot_3d()
     # Configure the trace.
     trace = go.Scatter3d(
@@ -170,7 +180,7 @@ def environment_satisfaction():
     df = load_csv_as_df()
     print(df[['Age', 'EnvironmentSatisfaction']].groupby(['Age'],
                                                          as_index=False).mean().sort_values(by='EnvironmentSatisfaction',
-                                                                                            ascending=False))
+                                                                                            ascending=False),"Environment Satisfaction by Age: Descending Satisfaction")
 
 
 # [TESTED]: WORKING
