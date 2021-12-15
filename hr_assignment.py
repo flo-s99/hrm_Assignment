@@ -17,12 +17,13 @@ import chart_studio.plotly as py
 import plotly.graph_objects as go
 import plotly.graph_objs as go
 
+
 # Function: [1]
 # Read the CSV provided by Kaggle (https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset/version/1)
 
 
 def read_data():
-    data = pd.read_csv('hrm.csv')
+    data = pd.read_csv('data/hrm.csv')
     data.shape  # Prints the shape (here 1470 rows and 35 columns)
     data  # Print data to see what we're working with:
     data.describe()  # Prints information on the dataframe (count, mean,std, min...)
@@ -69,6 +70,8 @@ def prevent_age_discrimination():
 # [TESTED]: WORKING
 prevent_age_discrimination()
 input("Press Enter to continue to the next function...")
+
+
 # Function: [4]
 # Find people who are with the same manager since the beginning and have been in his/her role for over x=5 years
 
@@ -86,6 +89,8 @@ def no_new_roles():
 # [TESTED]: WORKING
 no_new_roles()
 input("Press Enter to continue to the next function...")
+
+
 # Function: [5]
 # Show from which departments those people are (who do their role since +5 years and have the same manager)
 # Indicates the departments (especially also number of departments) which should implement a new promotion strategy
@@ -95,6 +100,7 @@ input("Press Enter to continue to the next function...")
 def plot_noNewRoles():
     df_noNewRoles = no_new_roles()
     df_noNewRoles.groupby('Department')['Age'].nunique().plot(kind='bar')
+    plt.title('Program will continue when you close this plot.')
     plt.show()
 
 
@@ -105,16 +111,35 @@ input("Press Enter to continue to the next function...")
 
 
 def load_csv_as_df():
-    df = pd.read_csv('hrm.csv')
+    df = pd.read_csv('data/hrm.csv')
     return df
 
 # Function: [6]
-# 3 dimensional analysis with individual user input for flexibility
-# Generates new DataFrame with just the specified parameters
+# Divide workforce into age groups 
+# Find out if the wage for a whole group is significantly larger/lower
+# The median of the groups will be used
+def pay_by_age():
+    data = pd.read_csv("data/hrm.csv")
+    # Ceate dataframe of age groups using the pandas cut method
+    df = pd.cut(data['Age'], bins=[16, 25, 40, 55, np.inf])
+    # Create crosstable against the mean of the Daily Rate of the specific age groups
+    ax = pd.crosstab(df, data['DailyRate'].mean())
+    # Create simple plot using matplotlib and save plot as pdf
+    ax.plot()
+    plt.savefig('data/AverageHourlyRate.pdf')
+    print(ax)
 
+# [TESTED]: Failed
+pay_by_age()
+input("Press Enter to continue to the next function...")
 
-def data_plot_3d():
-    df = pd.read_csv('hrm.csv')
+# Function: [7]
+# Visualize the individually chosen user inputs in a interactive, scalable 3D model
+# x denotes input 1, z denotes input 2 and y input 3, respectively
+# Configure Plotly to be rendered inline in the notebook.
+def scatterplot_3d():
+    print("Now choose three parameters you want to 3D Plot:")
+    df = pd.read_csv('data/hrm.csv')
     input1 = input("Enter your first Parameter (example: Age) => ")
     print("parameter1: ",  input1)
     input2 = input("Enter your second Parameter (example: Department)  => ")
@@ -127,25 +152,12 @@ def data_plot_3d():
     print("This is the data frame that only contains your specified data")
     user_pref = input("You can either save the data frame: Press s - OR - Continue without saving it as a csv: Press c (Press Enter after submission) => ")
     if user_pref == "s":
-        df_clean.to_csv("3D_PlotData_asCSV.csv")
+        df_clean.to_csv("data/3D_PlotData_asCSV.csv")
     elif user_pref == "c":
         print("Continuing")
     else :
         print("No specified action. Continuing without saving data to CSV.")
-    return df_clean, input1, input2, input3
 
-
-# [TESTED]: WORKING
-data_plot_3d()
-input("Press Enter to continue to the next function...")
-
-# Function: [7]
-# Visualize the individually chosen user inputs in a interactive, scalable 3D model
-# x denotes input 1, z denotes input 2 and y input 3, respectively
-# Configure Plotly to be rendered inline in the notebook.
-def scatterplot_3d():
-    print("Now choose three parameters you want to 3D Plot:")
-    df_clean, input1, input2, input3 = data_plot_3d()
     # Configure the trace.
     trace = go.Scatter3d(
         x=df_clean[input1],
@@ -218,44 +230,4 @@ def turnover_by_dpt():
 # [TESTED]: WORKING
 turnover_by_dpt()
 
-# Summary of the document (Also in ReadMe.md file):
-"""
-1. The functions are primariy focused to perform big data employee analysis and is optimized as of right now for visualizing fairness analysis
-
-2. Each function is indexed[1-10] and explained in the # section. I will still give further explanation here:
-
-[1] Open the CSV file in the directory and transform it into a pandas dataframe. Then we(a) see what shape our data has(how many rows of data entries and how many columns/features). Next, (b) we display the data to get an inuition how our data looks, what features there are and whether there are missing values. After that, we(c) display some general information for the whole dataframe: Median values, max/min values, std and so on.
-
-[2] Find people who work with the same manager since they started working: This indicates that either these people aren't working for many years or that their manager doesn't promote them. Analyzing this is a great indicator to find bad relationships or / and managers within the company.
-
-[3] This function let's us explore, whether the group from before, who didn't get promoted and are with the same manager, is discriminated regarding age: When nearly all people are younger than 30 this would indicate the company doesn't promote young talent.
-
-[4] Since a lower age could also mean that they don't have as much experience, we check how many people of the above mentioned group are in their current role for over 5-years, which means, they are pretty surely discriminated, as they do their job for quite a while. So, we find people who are with the same manager since the beginning and have been in his/her role for over x = 5 years.
-
-[5] Show from which departments those people are(who do their role since + 5 years and have the same manager. Indicates the departments(especially also number of departments) which should implement a new promotion strategy since the people work in their role for over 5 years with the same manager.
-
-[6] This function let's the user choose any three features he/she likes(numerically). Then, after choosing the desired features, the researcher will be automatically provided with a cleaned dataset containing only the desired features. This is done by a data query of the original dataframe with regards to the specific user input.
-
-[7] In this section we leverage the cleaned dataset by the researcher. One can perform three dimensional analysis, especially in form of 3D-scatterplots, which are interactive: This means the user is able to spin and zoom the rendered model. This can be really helpful in combination with clustering or just to see outliers in a three-dimensional space with regards to the chosen feature set.
-
-[8] To hold on to the principle of equality analysis, we want to check with regards to the feature "Environment Satisfaction", whether satisfaction is dependent on age. To analyze this all ages are grouped and then compared in descending order with their satisfaction.
-
-[9] This function is to perform further in depth equality analysis: This section is, again, completely customizable by the user. We let the researcher query a list, in which there are only employees which:
-- Were promoted in the last n years
-- And belong to the department d
-
-This is really helpful to find inequalities across departments.
-
-[10] The last function is of great general importance: We calculate employee-turnover by department. Monitoring in which department the people stay the longest is a significant indicator for great working conditions, while less years at the company in department d denote lower employee satisfaction in this very department.
-
-
-3. This smartsheet can be used for a broad spectrum of big data employee analysis. Concrete other functions include:
-
-- Checking whether employees from one department get more training than others
-
-- Visualizing three dimensional triplets to see whether wanted or unwanted patterns are forming, for example find out if WorkLifeBalance has a connection with Department and YearsAtCompany
-
-- Check whether people who travel frequently are more satisfied overall than those who don't
-
-- Find paygaps based on patterns(Lower age -> Lower pay? and so on..)
-"""
+# Summary of the document in the ReadMe.md File
