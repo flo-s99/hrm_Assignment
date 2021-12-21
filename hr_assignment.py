@@ -38,7 +38,7 @@ def people_with_same_Manager():
     df_sameManagerSinceStart = data.loc[(
         data['TotalWorkingYears'] == data['YearsWithCurrManager'])]
     print(df_sameManagerSinceStart,
-     "This is a list of employees who work under the same manager since they started working:")
+     "This is a list of employees who work under the same manager since they started working")
     return df_sameManagerSinceStart
 
 
@@ -128,6 +128,7 @@ def pay_by_age():
     ax.plot()
     plt.savefig('data/AverageHourlyRate.pdf')
     print(ax)
+    print('This is are the different age groups and their average hourly rate.')
 
 # [TESTED]: Failed
 pay_by_age()
@@ -225,6 +226,9 @@ def turnover_by_dpt():
     print(df[['Department', 'YearsAtCompany']].groupby(['Department'],
                                                        as_index=False).mean().sort_values(by='YearsAtCompany',
                                                                                           ascending=False))
+    print('This shows the turnover by department, computing the average years at the company for each department.')
+
+                                                                                
 
 
 # [TESTED]: WORKING
